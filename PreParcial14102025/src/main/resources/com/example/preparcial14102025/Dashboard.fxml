@@ -4,35 +4,39 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="78.0" prefWidth="260.0" text="Dashboard de Motos">
-               <font>
-                  <Font name="System Bold Italic" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </HBox>
-      <VBox prefHeight="269.0" prefWidth="600.0">
-         <children>
-            <Label text="Listado de Motos">
-               <font>
-                  <Font name="System Bold Italic" size="18.0" />
-               </font>
-            </Label>
-            <TableView fx:id="tblMotos" prefHeight="200.0" prefWidth="200.0">
-              <columns>
-                <TableColumn fx:id="colMarca" prefWidth="75.0" text="Marca" />
-                <TableColumn fx:id="colModelo" prefWidth="75.0" text="Modelo" />
-                  <TableColumn fx:id="colAño" prefWidth="75.0" text="Año" />
-                  <TableColumn fx:id="colPlaca" prefWidth="75.0" text="Placa" />
-              </columns>
-            </TableView>
-            <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#onRegresar" text="Regresar" />
-            <Button fx:id="btnAñadirMoto" mnemonicParsing="false" onAction="#onAñadirMoto" text="Añadir Moto :D" />
-         </children>
-      </VBox>
-   </children>
+<VBox fx:controller="com.example.preparcial14102025.Controladores.DashboardController"
+      maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      prefHeight="400.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0">
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="78.0" prefWidth="260.0" text="Dashboard de Motos">
+                    <font>
+                        <Font name="System Bold Italic" size="24.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <VBox prefHeight="269.0" prefWidth="600.0">
+            <children>
+                <Label text="Listado de Motos">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="tblMotos" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn fx:id="colMarca" prefWidth="75.0" text="Marca" />
+                        <TableColumn fx:id="colModelo" prefWidth="75.0" text="Modelo" />
+                        <TableColumn fx:id="colAño" prefWidth="75.0" text="Año" />
+                        <TableColumn fx:id="colPlaca" prefWidth="75.0" text="Placa" />
+                    </columns>
+                </TableView>
+                <Button fx:id="btnRegresar" mnemonicParsing="false" onAction="#onRegresar" text="Regresar" />
+                <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#onEliminarProducto" text="Eliminar Moto" />
+            </children>
+        </VBox>
+    </children>
 </VBox>

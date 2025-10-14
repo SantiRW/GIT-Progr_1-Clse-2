@@ -16,7 +16,6 @@ import java.io.IOException;
 
 public class DashboardController {
 
-
     @FXML
     private VBox contenedorPrincipal;
 
@@ -24,7 +23,7 @@ public class DashboardController {
     private Label lblTitulo;
 
     @FXML
-    private TableView<Moto> tablaMotos;
+    private TableView<Moto> tblMotos;
 
     @FXML
     private TableColumn<Moto, String> colMarca;
@@ -56,20 +55,7 @@ public class DashboardController {
         colModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
         colPlaca.setCellValueFactory(new PropertyValueFactory<>("placa"));
         colMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
-        colAño.setCellValueFactory(new PropertyValueFactory<>("año"));
-
-        // Formatear la columna de precio
-        colModelo.setCellFactory(column -> new TableCell<Moto, String>() {
-            @Override
-            protected void updateItem(String modelo, boolean empty) {
-                super.updateItem(modelo, empty);
-                if (empty || modelo == null) {
-                    setText(null);
-                } else {
-                    setText(String.format("$%.2f", modelo));
-                }
-            }
-        });
+        colAño.setCellValueFactory(new PropertyValueFactory<>("ano"));
 
         // Cargar los productos
         cargarProductos();
@@ -87,7 +73,7 @@ public class DashboardController {
      */
     public void cargarProductos() {
         listaMotos = FXCollections.observableArrayList(moto.getMotos());
-        tablaMotos.setItems(listaMotos);
+        tblMotos.setItems(listaMotos);
     }
 
     /**
@@ -95,7 +81,7 @@ public class DashboardController {
      */
     @FXML
     private void onEliminarProducto() {
-        Moto motoSeleccionada = tablaMotos.getSelectionModel().getSelectedItem();
+        Moto motoSeleccionada = tblMotos.getSelectionModel().getSelectedItem();
 
         if (motoSeleccionada == null) {
             mostrarAlerta("Advertencia", "Por favor seleccione una moto para eliminar", Alert.AlertType.WARNING);
@@ -104,14 +90,14 @@ public class DashboardController {
 
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar eliminación");
-        confirmacion.setHeaderText("¿Está seguro de eliminar el producto?");
-        confirmacion.setContentText("Producto: " + motoSeleccionada.getPlaca());
+        confirmacion.setHeaderText("¿Está seguro de eliminar la moto?");
+        confirmacion.setContentText("Moto: " + motoSeleccionada.getPlaca());
 
         confirmacion.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 moto.eliminarMoto(motoSeleccionada);
                 cargarProductos();
-                mostrarAlerta("Éxito", "Producto eliminado correctamente", Alert.AlertType.INFORMATION);
+                mostrarAlerta("Éxito", "Moto eliminada correctamente", Alert.AlertType.INFORMATION);
             }
         });
     }
@@ -119,20 +105,11 @@ public class DashboardController {
     /**
      * Regresa al menú principal
      */
+
     @FXML
     private void onRegresar() {
         if (menuPrincipalController != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/co/edu/uniquindio/fx10/vista/MenuPrincipal.fxml"));
-                Parent menu = loader.load();
-
-                menuPrincipalController.getPanePrincipal().getChildren().clear();
-                menuPrincipalController.getPanePrincipal().getChildren().add(menu);
-
-            } catch (IOException e) {
-                mostrarAlerta("Error", "No se pudo volver al menú principal", Alert.AlertType.ERROR);
-                e.printStackTrace();
-            }
+            menuPrincipalController.recargarMenuPrincipal();
         }
     }
 
@@ -146,5 +123,4 @@ public class DashboardController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
-
 }

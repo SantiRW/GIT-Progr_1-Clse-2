@@ -15,7 +15,6 @@ public class Moto {
         this.ano = ano;
     }
 
-
     public String getModelo() {
         return modelo;
     }
@@ -58,7 +57,4 @@ public class Moto {
                 '}';
     }
 
-    public void add(Moto moto) {
-
-    }
 }

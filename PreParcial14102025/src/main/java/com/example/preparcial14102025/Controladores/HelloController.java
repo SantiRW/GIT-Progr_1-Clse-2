@@ -5,10 +5,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -23,21 +25,18 @@ public class HelloController {
     private Button btnCrearProducto;
 
     @FXML
-    private Label lblMenu;
+    private VBox contenedorPrincipal;
 
     @FXML
     public void onInfo(ActionEvent event) {
         try {
-            // Cargar el Dashboard usando la ruta correcta
-            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/co/edu/uniquindio/fx10/vista/Dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/com/example/preparcial14102025/Dashboard.fxml"));
             Parent dashboard = loader.load();
 
-            // Obtener el controlador y cargar los productos
             DashboardController dashboardController = loader.getController();
             dashboardController.setMenuPrincipalController(this);
             dashboardController.cargarProductos();
 
-            // Limpiar el panel y agregar la nueva vista
             panePrincipal.getChildren().clear();
             panePrincipal.getChildren().add(dashboard);
 
@@ -50,15 +49,12 @@ public class HelloController {
     @FXML
     public void onCrearProducto(ActionEvent event) {
         try {
-            // Cargar el Formulario usando la ruta correcta
-            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/co/edu/uniquindio/fx10/vista/FormularioProducto.fxml"));
+            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/com/example/preparcial14102025/Formulario.fxml"));
             Parent formulario = loader.load();
 
-            // Pasar la referencia del controlador del menú
             FormularioController formularioController = loader.getController();
             formularioController.setMenuprincipalController(this);
 
-            // Limpiar el panel y agregar la nueva vista
             panePrincipal.getChildren().clear();
             panePrincipal.getChildren().add(formulario);
 
@@ -73,18 +69,20 @@ public class HelloController {
     }
 
     /**
-     * Restaura el menú principal
+     * Recarga completamente la escena del menú principal
      */
-    public void restaurarMenuPrincipal() {
+    public void recargarMenuPrincipal() {
         try {
-            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/co/edu/uniquindio/fx10/vista/MenuPrincipal.fxml"));
-            Parent menu = loader.load();
+            FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/com/example/preparcial14102025/Menu.fxml"));
+            Parent nuevoMenu = loader.load();
 
-            panePrincipal.getChildren().clear();
-            panePrincipal.getChildren().add(menu);
+            // Obtener el Stage actual y reemplazar la escena
+            Stage stage = (Stage) panePrincipal.getScene().getWindow();
+            Scene scene = new Scene(nuevoMenu, 800, 600);
+            stage.setScene(scene);
 
         } catch (IOException e) {
-            mostrarAlerta("Error", "No se pudo restaurar el menú principal", Alert.AlertType.ERROR);
+            mostrarAlerta("Error", "No se pudo recargar el menú principal", Alert.AlertType.ERROR);
             e.printStackTrace();
         }
     }

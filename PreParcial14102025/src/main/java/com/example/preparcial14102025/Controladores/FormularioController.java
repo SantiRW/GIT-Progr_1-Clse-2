@@ -9,22 +9,21 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
 import java.io.IOException;
 
 public class FormularioController {
 
     @FXML
-    private TextField txtPLaca;
+    private TextField txtCodigo;
 
     @FXML
-    private TextField txtMarca;
+    private TextField txtNombre;
 
     @FXML
-    private TextField txtModelo;
+    private TextField txtDescripcion;
 
     @FXML
-    private TextField txtAño;
+    private TextField txtPrecio;
 
     @FXML
     private Button btnGuardar;
@@ -40,16 +39,10 @@ public class FormularioController {
         moto = MotoRepository.getInstancia();
     }
 
-    /**
-     * Establece el controlador del Menu para poder regresar
-     */
     public void setMenuprincipalController(HelloController menuPrincipalController) {
         this.menuPrincipalController = menuPrincipalController;
     }
 
-    /**
-     * Maneja el evento de guardar producto
-     */
     @FXML
     private void onGuardarProducto() {
         if (!validarCampos()) {
@@ -57,84 +50,58 @@ public class FormularioController {
         }
 
         try {
-            String placa = txtPLaca.getText().trim();
-            String marca = txtMarca.getText().trim();
-            String modelo = txtModelo.getText().trim();
-            String ano  = txtAño.getText().trim();
+            String placa = txtCodigo.getText().trim();
+            String marca = txtNombre.getText().trim();
+            String modelo = txtDescripcion.getText().trim();
+            String ano = txtPrecio.getText().trim();
 
-            // Verificar si el código ya existe
             if (moto.buscarMotoPorPlaca(placa) != null) {
-                mostrarAlerta("Error", "Ya existe un producto con ese código", Alert.AlertType.ERROR);
+                mostrarAlerta("Error", "Ya existe una moto con esa placa", Alert.AlertType.ERROR);
                 return;
             }
 
-            // Crear y guardar el producto
-            Moto moto1 = new Moto(modelo, ano, placa, marca);
+            Moto moto1 = new Moto(modelo, placa, marca, ano);
             moto.agregarMoto(moto1);
 
-            mostrarAlerta("Éxito", "Producto creado correctamente", Alert.AlertType.INFORMATION);
-
-            // Volver al Menu Principal
+            mostrarAlerta("Éxito", "Moto creada correctamente", Alert.AlertType.INFORMATION);
             volverAlMenuPrincipal();
 
-        } catch (NumberFormatException e) {
-            mostrarAlerta("Error", "El precio y stock deben ser valores numéricos válidos", Alert.AlertType.ERROR);
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al guardar la moto: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
-    /**
-     * Maneja el evento de cancelar
-     */
     @FXML
     private void onCancelar() {
         volverAlMenuPrincipal();
     }
 
-    /**
-     * Vuelve a mostrar el menú principal
-     */
     private void volverAlMenuPrincipal() {
         if (menuPrincipalController != null) {
-            try {
-                FXMLLoader loader = new FXMLLoader(Launcher.class.getResource("/co/edu/uniquindio/fx10/vista/MenuPrincipal.fxml"));
-                Parent menu = loader.load();
-
-                menuPrincipalController.getPanePrincipal().getChildren().clear();
-                menuPrincipalController.getPanePrincipal().getChildren().add(menu);
-
-            } catch (IOException e) {
-                mostrarAlerta("Error", "No se pudo volver al menú principal", Alert.AlertType.ERROR);
-                e.printStackTrace();
-            }
+            menuPrincipalController.recargarMenuPrincipal();
         }
     }
 
-    /**
-     * Valida que los campos del formulario estén completos
-     */
     private boolean validarCampos() {
-        if (txtModelo.getText().trim().isEmpty()) {
-            mostrarAlerta("Error de validación", "El código es obligatorio", Alert.AlertType.WARNING);
+        if (txtCodigo.getText().trim().isEmpty()) {
+            mostrarAlerta("Error de validación", "La placa es obligatoria", Alert.AlertType.WARNING);
             return false;
         }
-        if (txtMarca.getText().trim().isEmpty()) {
-            mostrarAlerta("Error de validación", "El nombre es obligatorio", Alert.AlertType.WARNING);
+        if (txtNombre.getText().trim().isEmpty()) {
+            mostrarAlerta("Error de validación", "La marca es obligatoria", Alert.AlertType.WARNING);
             return false;
         }
-        if (txtPLaca.getText().trim().isEmpty()) {
-            mostrarAlerta("Error de validación", "La descripción es obligatoria", Alert.AlertType.WARNING);
+        if (txtDescripcion.getText().trim().isEmpty()) {
+            mostrarAlerta("Error de validación", "El modelo es obligatorio", Alert.AlertType.WARNING);
             return false;
         }
-        if (txtAño.getText().trim().isEmpty()) {
-            mostrarAlerta("Error de validación", "El precio es obligatorio", Alert.AlertType.WARNING);
+        if (txtPrecio.getText().trim().isEmpty()) {
+            mostrarAlerta("Error de validación", "El año es obligatorio", Alert.AlertType.WARNING);
             return false;
         }
         return true;
     }
 
-    /**
-     * Muestra una alerta al usuario
-     */
     private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -143,4 +110,3 @@ public class FormularioController {
         alerta.showAndWait();
     }
 }
-
